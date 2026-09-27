@@ -31,7 +31,8 @@ function cleanPromo(p) {
     link: cleanStr(p.link, 300),
     startsAt: dateOk(p.startsAt),
     endsAt: dateOk(p.endsAt),
-    updatedAt: cleanStr(p.updatedAt, 40)
+    updatedAt: cleanStr(p.updatedAt, 40),
+    image: /^assets\/[A-Za-z0-9._-]+$/.test(cleanStr(p.image, 200)) ? cleanStr(p.image, 200) : ''
   };
 }
 
