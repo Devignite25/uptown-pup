@@ -1,13 +1,13 @@
 {
+  "id": "welcome10",
   "active": false,
+  "title": "Welcome to UpTown Pup!",
+  "message": "Enjoy 10% off your first collar.",
   "code": "WELCOME10",
   "ctaText": "Shop the collection",
-  "endsAt": "",
-  "id": "welcome10",
   "link": "https://www.etsy.com/shop/UpTownPupCreations",
-  "message": "Enjoy 10% off your first collar.",
   "startsAt": "",
-  "title": "Welcome to UpTown Pup!",
+  "endsAt": "",
   "updatedAt": "",
   "image": ""
 }
