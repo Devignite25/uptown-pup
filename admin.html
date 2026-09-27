@@ -155,8 +155,8 @@ input[type=file]{padding:8px 0;border:none;background:none}
         <label>More photos <span class="hint-inline">— dogs wearing it, close-ups, etc.</span></label>
         <div id="galGrid" class="galgrid"></div>
         <div>
-          <input type="file" id="galFile" accept="image/*" multiple>
-          <p class="hint" id="galUpMsg"></p>
+          <input type="file" id="prodGalFile" accept="image/*" multiple>
+          <p class="hint" id="prodGalUpMsg"></p>
         </div>
         <div style="margin-top:8px">
           <button class="btn" id="saveProdBtn">Save product</button>
@@ -208,8 +208,8 @@ input[type=file]{padding:8px 0;border:none;background:none}
         <div class="phrow">
           <img id="galPrev" class="thumb-lg" src="" alt="Gallery photo preview">
           <div>
-            <input type="file" id="galFile" accept="image/*">
-            <p class="hint" id="galUpMsg"></p>
+            <input type="file" id="prodGalFile" accept="image/*">
+            <p class="hint" id="prodGalUpMsg"></p>
           </div>
         </div>
         <label for="fGalCap">Caption (optional) — e.g. the dog's name</label>
@@ -323,18 +323,18 @@ function openEditor(id){
   $('fPCat').value = draft.category; $('fPPrice').value = draft.priceFrom;
   $('fPEtsy').value = draft.etsy||''; $('fPStripe').value = draft.stripe||'';
   $('mainPrev').src = draft.image || '';
-  $('mainFile').value = ''; $('galFile').value = '';
-  $('prodErr').textContent = ''; $('mainUpMsg').textContent = ''; $('galUpMsg').textContent = '';
-  renderGallery();
+  $('mainFile').value = ''; $('prodGalFile').value = '';
+  $('prodErr').textContent = ''; $('mainUpMsg').textContent = ''; $('prodGalUpMsg').textContent = '';
+  renderProdGallery();
   $('prodEditor').classList.remove('hidden');
   $('prodEditor').scrollIntoView({behavior:'smooth'});
 }
-function renderGallery(){
+function renderProdGallery(){
   $('galGrid').innerHTML = (draft.gallery||[]).map((g,i)=>
     '<div class="galthumb"><img src="'+esc(g)+'" alt="Extra photo '+(i+1)+'"><button data-rm="'+i+'" aria-label="Remove photo">×</button></div>'
   ).join('');
   document.querySelectorAll('[data-rm]').forEach(b=>b.addEventListener('click',()=>{
-    draft.gallery.splice(Number(b.dataset.rm),1); renderGallery();
+    draft.gallery.splice(Number(b.dataset.rm),1); renderProdGallery();
   }));
 }
 
@@ -371,16 +371,16 @@ $('mainFile').addEventListener('change', async e=>{
   catch(err){ $('mainUpMsg').textContent = 'Upload failed — try again.'; }
   $('saveProdBtn').disabled = false; e.target.value = '';
 });
-$('galFile').addEventListener('change', async e=>{
+$('prodGalFile').addEventListener('change', async e=>{
   const files = [...e.target.files]; if(!files.length) return;
-  $('galUpMsg').textContent = 'Uploading '+files.length+' photo(s)…'; $('saveProdBtn').disabled = true;
+  $('prodGalUpMsg').textContent = 'Uploading '+files.length+' photo(s)…'; $('saveProdBtn').disabled = true;
   let ok = 0;
   for(const f of files){
     try{ draft.gallery.push(await uploadFile(f)); ok++; }
     catch(err){ /* keep going */ }
   }
-  renderGallery();
-  $('galUpMsg').textContent = ok ? 'Uploaded '+ok+' photo(s) ✓' : 'Upload failed — try again.';
+  renderProdGallery();
+  $('prodGalUpMsg').textContent = ok ? 'Uploaded '+ok+' photo(s) ✓' : 'Upload failed — try again.';
   $('saveProdBtn').disabled = false; e.target.value = '';
 });
 
