@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UpTown Pup — Handmade Beaded Dog Collars</title>
+<meta name="description" content="UpTown Pup makes handmade beaded dog collars — every bead chosen, every collar one of a kind.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#faf6ef; --cream2:#f4ecdd; --ink:#2b2b2b; --ink-soft:#5a5348;
+  --gold:#c9a227; --gold-deep:#a8841c; --blush:#e3a7ad; --sage:#8aa382;
+  --card:#fffdf8; --line:#e7dcc6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);line-height:1.65;font-weight:300}
+h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.15}
+.script{font-family:'Pinyon Script',cursive;font-weight:400}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+/* nav */
+nav{position:sticky;top:0;z-index:50;background:rgba(250,246,239,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.brand img{height:52px;width:auto}
+.brand span{font-family:'Cormorant Garamond',serif;font-size:1.35rem;letter-spacing:.14em;text-transform:uppercase}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a.nl{text-decoration:none;color:var(--ink-soft);font-size:.95rem;letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+.nav-links a.nl:hover{color:var(--gold-deep)}
+.btn{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;padding:12px 28px;border-radius:999px;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;transition:transform .2s,background .2s;border:none;cursor:pointer;font-family:'Jost',sans-serif}
+.btn:hover{background:var(--gold-deep);transform:translateY(-2px)}
+.btn.gold{background:var(--gold)}
+.btn.gold:hover{background:var(--gold-deep)}
+.btn.outline{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.btn.outline:hover{background:var(--ink);color:#fff}
+/* hero */
+.hero{text-align:center;padding:72px 24px 56px;position:relative;overflow:hidden}
+.hero .logo-big{width:190px;height:auto;margin-bottom:10px}
+.hero .kicker{font-family:'Pinyon Script',cursive;font-size:2.2rem;color:var(--gold-deep);margin-bottom:6px}
+.hero h1{font-size:clamp(2.6rem,6vw,4.4rem);margin-bottom:14px}
+.hero h1 em{font-style:italic;color:var(--gold-deep)}
+.hero p.sub{max-width:620px;margin:0 auto 30px;font-size:1.12rem;color:var(--ink-soft)}
+.hero .ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.hero .paw{position:absolute;opacity:.07;font-size:9rem;pointer-events:none}
+/* divider */
+.divider{display:flex;justify-content:center;padding:8px 0}
+.divider img{height:26px;width:auto;opacity:.85}
+/* sections */
+section{padding:64px 0}
+.sec-head{text-align:center;margin-bottom:14px}
+.sec-head .script{font-size:1.9rem;color:var(--gold-deep)}
+.sec-head h2{font-size:clamp(1.9rem,4vw,2.7rem);margin:4px 0 10px}
+.sec-head p{color:var(--ink-soft);max-width:640px;margin:0 auto}
+/* filters */
+.filters{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:30px 0 34px}
+.filters button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:9px 22px;font-family:'Jost',sans-serif;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--ink-soft);transition:all .2s}
+.filters button:hover{border-color:var(--gold);color:var(--ink)}
+.filters button.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:26px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(43,43,43,.12)}
+.card .ph{aspect-ratio:4/3;overflow:hidden;background:#111;cursor:zoom-in}
+.card .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.card:hover .ph img{transform:scale(1.05)}
+.card .body{padding:20px 20px 22px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card .cat{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep)}
+.card h3{font-size:1.35rem}
+.card p.blurb{font-size:.94rem;color:var(--ink-soft);flex:1}
+.card .row{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.card .price{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600}
+.card .buybtn{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;padding:10px 24px;border-radius:999px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Jost',sans-serif;font-weight:500;transition:background .2s,transform .2s;white-space:nowrap}
+.card .buybtn:hover{background:var(--gold-deep);transform:translateY(-2px)}
+.card .buybtn.alt{background:transparent;color:var(--ink);border:1px solid var(--ink);padding:9px 24px}
+.card .buybtn.alt:hover{background:var(--ink);color:#fff}
+.card .btnrow{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.card.hide{display:none}
+.count-note{text-align:center;color:var(--ink-soft);font-size:.9rem;margin-top:26px}
+/* pricing */
+.pricing{background:var(--cream2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:34px}
+.price-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px 28px;text-align:center;position:relative}
+.price-card.featured{border:2px solid var(--gold);transform:scale(1.03)}
+.price-card .tag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:#fff;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;padding:4px 16px;border-radius:999px}
+.price-card h3{font-size:1.5rem;margin-bottom:6px}
+.price-card .amt{font-family:'Cormorant Garamond',serif;font-size:3rem;color:var(--gold-deep);margin:8px 0}
+.price-card p{font-size:.94rem;color:var(--ink-soft)}
+.price-note{text-align:center;margin-top:26px;color:var(--ink-soft);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.1rem}
+/* about */
+.about-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:48px;align-items:center;margin-top:10px}
+.about-grid img.dog{width:100%;max-width:340px;justify-self:center}
+.about-grid .script{font-size:1.8rem;color:var(--gold-deep)}
+.about-grid h2{font-size:clamp(1.9rem,4vw,2.6rem);margin:6px 0 16px}
+.about-grid p{color:var(--ink-soft);margin-bottom:14px;font-size:1.05rem}
+.about-grid ul{list-style:none;margin-top:18px;display:grid;gap:10px}
+.about-grid li{display:flex;gap:12px;align-items:flex-start;font-size:.98rem}
+.about-grid li::before{content:"🐾";font-size:1rem}
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px;margin-top:34px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px 24px;text-align:center}
+.step .num{font-family:'Pinyon Script',cursive;font-size:2.6rem;color:var(--gold)}
+.step h3{font-size:1.3rem;margin:6px 0 8px}
+.step p{font-size:.94rem;color:var(--ink-soft)}
+.order-cta{text-align:center;margin-top:36px}
+.event-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:28px}
+.event-card{background:#fff;border:1px solid #e9e0cf;border-radius:14px;padding:22px;box-shadow:0 2px 10px rgba(60,50,30,.05)}
+.event-date{display:inline-block;background:var(--ink);color:#fff;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin-bottom:12px}
+.event-card h3{font-family:'Cormorant Garamond',serif;font-size:1.35rem;margin:0 0 6px}
+.event-card .loc{font-weight:500;margin:0 0 6px}
+.event-card .notes{font-size:.92rem;opacity:.75;margin:0}
+.events-empty{text-align:center;opacity:.65;font-style:italic;margin-top:20px}
+/* footer */
+footer{background:var(--ink);color:#efe8d8;padding:52px 0 30px;text-align:center}
+footer img{height:64px;width:auto;margin-bottom:12px;filter:brightness(0) invert(1);opacity:.9}
+footer .fname{font-family:'Cormorant Garamond',serif;letter-spacing:.2em;text-transform:uppercase;font-size:1.1rem;margin-bottom:6px}
+footer a{color:var(--blush);text-decoration:none}
+footer a:hover{text-decoration:underline}
+footer .fine{margin-top:22px;font-size:.82rem;opacity:.65}
+/* lightbox */
+#lightbox{position:fixed;inset:0;background:rgba(20,18,14,.9);display:none;align-items:center;justify-content:center;z-index:100;padding:24px;cursor:zoom-out}
+#lightbox.open{display:flex}
+#lightbox figure{max-width:min(920px,94vw);text-align:center}
+#lightbox img{max-width:100%;max-height:80vh;border-radius:12px}
+#lightbox figcaption{color:#fff;margin-top:12px;font-family:'Cormorant Garamond',serif;font-size:1.3rem}
+@media(max-width:760px){
+  .nav-links a.nl{display:none}
+  .about-grid{grid-template-columns:1fr}
+  .about-grid img.dog{max-width:240px}
+  section{padding:48px 0}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top"><img src="assets/logo-full.png" alt="UpTown Pup logo"><span>UpTown Pup</span></a>
+    <div class="nav-links">
+      <a class="nl" href="#collection">Collection</a>
+      <a class="nl" href="#pricing">Pricing</a>
+      <a class="nl" href="#about">About</a>
+      <a class="btn" href="https://www.etsy.com/shop/UpTownPupCreations" target="_blank" rel="noopener">Buy on Etsy</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <img class="logo-big" src="assets/logo-full.png" alt="UpTown Pup — handmade beaded dog collars">
+  <div class="kicker">handmade with love</div>
+  <h1>Jewelry for your <em>best friend.</em></h1>
+  <p class="sub">Hand-strung beaded collars for dogs with style — every bead chosen, every collar one of a kind.</p>
+  <div class="ctas">
+    <a class="btn gold" href="#collection">Browse the collection</a>
+    <a class="btn outline" href="https://www.etsy.com/shop/UpTownPupCreations" target="_blank" rel="noopener">Buy on Etsy</a>
+  </div>
+</header>
+
+<div class="divider"><img src="assets/divider.png" alt=""></div>
+
+<section id="collection">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="script">the collection</div>
+      <h2>One of a kind, just like them</h2>
+      <p>Thirty-five original designs, from everyday neutrals to holiday show-stoppers. When a design sells, it's gone — that's the beauty of handmade.</p>
+    </div>
+    <div class="filters" id="filters">
+      <button class="active" data-f="all">All</button>
+      <button data-f="everyday">Everyday</button>
+      <button data-f="halloween">Halloween</button>
+      <button data-f="christmas">Christmas</button>
+      <button data-f="seasonal">Seasonal</button>
+    </div>
+    <div class="grid" id="grid"></div>
+    <p class="count-note" id="countNote"></p>
+  </div>
+</section>
+
+<div class="divider"><img src="assets/divider.png" alt=""></div>
+
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="script">simple pricing</div>
+      <h2>Sized for every pup</h2>
+      <p>Every collar is handmade to order in your dog's size. Measure around the neck where the collar sits, then pick your size.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <h3>Small</h3>
+        <div class="amt">$25</div>
+        <p>For petite pups and toy breeds who like a little sparkle.</p>
+      </div>
+      <div class="price-card featured">
+        <div class="tag">Most popular</div>
+        <h3>Medium &amp; Large</h3>
+        <div class="amt">$35</div>
+        <p>The sweet spot — fits most dogs, from beagles to labs.</p>
+      </div>
+      <div class="price-card">
+        <h3>Extra Large</h3>
+        <div class="amt">$40</div>
+        <p>For big, bold dogs with big, bold style.</p>
+      </div>
+    </div>
+    <p class="price-note">"Every collar is handmade to order in your pup's size."</p>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <img class="dog" src="assets/dog.png" alt="UpTown Pup dog illustration">
+      <div>
+        <div class="script">our story</div>
+        <h2>Dogs deserve beautiful things too</h2>
+        <p>UpTown Pup started with a simple idea: dogs deserve accessories as special as they are. Each collar is hand-strung bead by bead from soft silicone beads — lightweight, wipeable, and made to turn heads at the dog park.</p>
+        <p>From everyday neutrals to Halloween pumpkins and Christmas candy canes, there's a design for every personality and every season. And because each one is made by hand, no two are exactly alike.</p>
+        <ul>
+          <li>Hand-strung from soft, lightweight silicone beads</li>
+          <li>One-of-a-kind designs — when it's gone, it's gone</li>
+          <li>Made to order in Small, Medium/Large, and XL</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><img src="assets/divider.png" alt=""></div>
+
+<section id="order">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="script">how to order</div>
+      <h2>Three easy steps</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h3>Pick a design</h3><p>Browse the collection and find the collar that matches your pup's personality.</p></div>
+      <div class="step"><div class="num">2</div><h3>Choose a size</h3><p>Small, Medium/Large, or XL — measure around the neck where the collar sits.</p></div>
+      <div class="step"><div class="num">3</div><h3>Buy on Etsy</h3><p>Head to our Etsy store — each piece is handmade to order just for your dog.</p></div>
+    </div>
+    <div class="order-cta">
+      <a class="btn gold" href="https://www.etsy.com/shop/UpTownPupCreations" target="_blank" rel="noopener">Buy UpTown Pup on Etsy</a>
+    </div>
+  </div>
+</section>
+
+<section id="events">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="script">upcoming events</div>
+      <h2>Find us in person</h2>
+      <p>Come say hi and shop the collars in person — we'd love to meet your pup.</p>
+    </div>
+    <div id="eventGrid" class="event-grid"></div>
+    <p id="eventsEmpty" class="events-empty" style="display:none">No events scheduled yet — check back soon!</p>
+  </div>
+</section>
+
+<div class="divider"><img src="assets/divider.png" alt=""></div>
+
+<footer>
+  <div class="wrap">
+    <img src="assets/wordmark.png" alt="UpTown Pup">
+    <div class="fname">UpTown Pup</div>
+    <p>uptownpup.net · <a href="https://www.etsy.com/shop/UpTownPupCreations" target="_blank" rel="noopener">Etsy store</a></p>
+    <p class="fine">Handmade with love · © 2026 UpTown Pup</p>
+  </div>
+</footer>
+
+<div id="lightbox"><figure><img id="lbImg" src="" alt=""><figcaption id="lbCap"></figcaption></figure></div>
+
+<script>
+const ETSY = "https://www.etsy.com/shop/UpTownPupCreations";
+const PRODUCTS = [
+["IMG_5368.jpeg","Scarlet Garden","everyday","Red, white & gold floral beads","https://www.etsy.com/listing/4579130117/beaded-dog-necklace-red-flowers-pearls"],
+["IMG_5369.jpeg","Rainbow Pastel","everyday","Soft pastel rainbow beads","https://www.etsy.com/listing/4579159936/beaded-dog-necklace-pastel-rainbow-be"],
+["IMG_5370.jpeg","Daisy Meadow","everyday","Blush daisies on pastel beads"],
+["IMG_5372.jpeg","Galaxy Glam","everyday","Cosmic purple & blue sparkle beads"],
+["IMG_5373.jpeg","Midnight Pearl","everyday","Black, white & silver monochrome"],
+["IMG_5376.jpeg","Champagne Noir","everyday","Black & champagne gold"],
+["IMG_5377.jpeg","Bronze Paw","everyday","Warm bronze with paw-print bead"],
+["IMG_5378.jpeg","Sunflower Neutral","everyday","Earthy neutrals with sunflower bead"],
+["IMG_5385.jpeg","Golden Hour","everyday","Black & gold with bone clasp"],
+["IMG_5386.jpeg","Pearl Noir","everyday","Black & white pearls"],
+["IMG_5389.jpeg","Autumn Copper","everyday","Copper & bronze fall tones"],
+["IMG_5392.jpeg","Copper Glow","everyday","Glowing bronze & copper beads"],
+["IMG_5393.jpeg","Bronze Ember","everyday","Smoky bronze & black"],
+["IMG_5394.jpeg","Ocean Mist","everyday","Sea blue & white beads"],
+["IMG_5395.jpeg","Ros\u00e9","everyday","Pink & bronze"],
+["IMG_5403.jpeg","Mermaid Bow","everyday","Teal & violet with bow bead"],
+["IMG_5404.jpeg","Confetti","everyday","Pastel confetti beads"],
+["IMG_5379.jpeg","Harvest Moon","halloween","Orange, purple & black","https://www.etsy.com/listing/4579120483/beaded-martingale-dog-collar-halloween"],
+["IMG_5382.jpeg","Spooky Sweet","halloween","Purple & orange mini beads"],
+["IMG_5388.jpeg","Witching Hour","halloween","Orange & violet with pumpkin bead"],
+["IMG_5390.jpeg","Trick or Treat","halloween","Purple & orange sparkle"],
+["IMG_5402.jpeg","Pumpkin Patch","halloween","Orange, purple & black"],
+["IMG_5380.jpeg","Classic Christmas","christmas","Red & green"],
+["IMG_5381.jpeg","Holly Jolly","christmas","Red, green & white"],
+["IMG_5383.jpeg","Merry Mini","christmas","Festive multicolor"],
+["IMG_5387.jpeg","Peppermint Star","christmas","Red & white with star beads","https://www.etsy.com/listing/4579123995/beaded-martingale-dog-collar-red-white"],
+["IMG_5391.jpeg","Mistletoe","christmas","Green, red & white"],
+["IMG_5396.jpeg","Candy Cane","christmas","Red & white stripes"],
+["IMG_5398.jpeg","Starlight","christmas","Red, gold & white with stars"],
+["IMG_5400.jpeg","Holiday Gold","christmas","Red & gold celebration","https://www.etsy.com/listing/4579134320/beaded-martingale-dog-collar-christmas"],
+["IMG_5401.jpeg","Jolly Stripe","christmas","Green, red & white stripes"],
+["IMG_5374.jpeg","Americana","seasonal","Red, white & blue"],
+["IMG_5375.jpeg","Fiesta","seasonal","Teal & red with cactus beads"],
+["IMG_5399.jpeg","Sea Turtle","seasonal","Blue & green with turtle beads","https://www.etsy.com/listing/4577192586/beaded-martingale-dog-collar-colortheme"],
+["IMG_5405.jpeg","Beachcomber","seasonal","Sandy neutrals & blue with turtle beads"],
+["IMG_gameday.jpg","Gameday","seasonal","Team colors, 12mm beads","https://www.etsy.com/listing/4579165638/small-dog-gameday-beaded-collar-team"],
+["IMG_hawaiian.jpg","Hawaiian Getaway","seasonal","Hawaiian shirt & shorts print, bone clasp","https://www.etsy.com/listing/4579144770/beaded-dog-necklace-hawaiian-shirt"]
+];
+const CATLABEL = {everyday:"Everyday",halloween:"Halloween",christmas:"Christmas",seasonal:"Seasonal"};
+// Stripe Payment Links per product. Paste each product's link from the Stripe dashboard
+// (https://dashboard.stripe.com/payment-links). The "Buy with Stripe" button only shows
+// for products that have a link here.
+const STRIPE = {
+  //"Sea Turtle": "https://buy.stripe.com/your-link-here",
+};
+const grid = document.getElementById('grid');
+const countNote = document.getElementById('countNote');
+PRODUCTS.forEach(p=>{
+  const [file,name,cat,blurb,link] = p;
+  const url = link || ETSY + "?search_query=" + encodeURIComponent(name + " beaded dog collar");
+  const el = document.createElement('article');
+  el.className = 'card'; el.dataset.cat = cat;
+  el.innerHTML =
+    '<div class="ph"><img loading="lazy" src="assets/'+file+'" alt="'+name+' beaded dog collar"></div>'+
+    '<div class="body"><div class="cat">'+CATLABEL[cat]+'</div><h3>'+name+'</h3>'+
+    '<p class="blurb">'+blurb+'.</p>'+
+    '<div class="row"><span class="price">From $25</span></div>'+
+    '<div class="btnrow">'+
+    '<a class="buybtn" href="'+url+'" target="_blank" rel="noopener">Buy on Etsy</a>'+
+    (STRIPE[name]?'<a class="buybtn alt" href="'+STRIPE[name]+'" target="_blank" rel="noopener">Buy with Stripe</a>':'')+
+    '</div></div>';
+  el.querySelector('.ph').addEventListener('click',()=>openLB(file,name));
+  grid.appendChild(el);
+});
+function updateCount(){
+  const vis = [...grid.children].filter(c=>!c.classList.contains('hide')).length;
+  countNote.textContent = "Showing "+vis+" of "+PRODUCTS.length+" designs";
+}
+document.getElementById('filters').addEventListener('click',e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#filters button').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  const f = b.dataset.f;
+  [...grid.children].forEach(c=>c.classList.toggle('hide', f!=='all' && c.dataset.cat!==f));
+  updateCount();
+});
+updateCount();
+const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lbImg'), lbCap = document.getElementById('lbCap');
+function openLB(file,name){ lbImg.src = "assets/"+file; lbImg.alt = name+" beaded dog collar"; lbCap.textContent = name; lb.classList.add('open'); }
+lb.addEventListener('click',()=>lb.classList.remove('open'));
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') lb.classList.remove('open'); });
+// Upcoming events (managed from /admin)
+fetch('/api/events').then(r=>r.json()).then(evts=>{
+  const grid = document.getElementById('eventGrid');
+  if(!evts.length){ document.getElementById('eventsEmpty').style.display='block'; return; }
+  grid.innerHTML = evts.map(e=>{
+    const d = new Date(e.date+'T12:00:00');
+    const ds = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+    return '<div class="event-card"><div class="event-date">'+ds+'</div><h3>'+
+      e.title.replace(/</g,'&lt;')+'</h3><p class="loc">'+e.location.replace(/</g,'&lt;')+'</p>'+
+      (e.notes?'<p class="notes">'+e.notes.replace(/</g,'&lt;')+'</p>':'')+'</div>';
+  }).join('');
+}).catch(()=>{ document.getElementById('eventsEmpty').style.display='block'; });
+</script>
+</body>
+</html>

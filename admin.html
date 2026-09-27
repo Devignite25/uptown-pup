@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — UpTown Pup</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#faf6ef; --ink:#2b2b2b; --ink-soft:#5a5348;
+  --gold:#c9a227; --gold-deep:#a8841c; --line:#e7dcc6; --card:#fffdf8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);line-height:1.65;font-weight:300;min-height:100vh}
+.wrap{max-width:720px;margin:0 auto;padding:48px 24px}
+.script{font-family:'Pinyon Script',cursive;font-size:1.6rem;color:var(--gold-deep)}
+h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;margin-bottom:6px}
+.sub{color:var(--ink-soft);margin-bottom:28px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;margin-bottom:22px;box-shadow:0 2px 10px rgba(60,50,30,.05)}
+label{display:block;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
+input,textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-family:'Jost',sans-serif;font-size:1rem;background:#fff;color:var(--ink)}
+input:focus,textarea:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.btn{display:inline-block;background:var(--ink);color:#fff;border:none;cursor:pointer;padding:12px 28px;border-radius:999px;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Jost',sans-serif;transition:background .2s,transform .2s;margin-top:18px}
+.btn:hover{background:var(--gold-deep);transform:translateY(-2px)}
+.btn.danger{background:transparent;color:#a33;border:1px solid #a33;padding:8px 18px;font-size:.75rem;margin-top:10px}
+.btn.danger:hover{background:#a33;color:#fff}
+.err{color:#a33;margin-top:12px;min-height:1.4em}
+.evt{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
+.evt:last-child{border-bottom:none}
+.evt .d{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-deep)}
+.evt h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem}
+.evt .l{color:var(--ink-soft);font-size:.95rem}
+.evt .n{font-size:.9rem;opacity:.75}
+.back{display:inline-block;margin-top:24px;color:var(--ink-soft);font-size:.9rem}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="script">uptown pup</div>
+  <h1>Admin</h1>
+  <p class="sub">Manage upcoming events shown on the website.</p>
+
+  <div id="loginView" class="card hidden">
+    <label for="pw">Password</label>
+    <input type="password" id="pw" autocomplete="current-password" placeholder="Enter admin password">
+    <button class="btn" id="loginBtn">Log in</button>
+    <p class="err" id="loginErr"></p>
+  </div>
+
+  <div id="dashView" class="hidden">
+    <div class="card">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem">Add an event</h3>
+      <label for="fTitle">Event name</label>
+      <input id="fTitle" placeholder="e.g. Riverside Arts Market">
+      <label for="fDate">Date</label>
+      <input id="fDate" type="date">
+      <label for="fLoc">Location</label>
+      <input id="fLoc" placeholder="e.g. 715 Riverside Ave, Jacksonville FL">
+      <label for="fNotes">Notes (optional)</label>
+      <textarea id="fNotes" rows="2" placeholder="e.g. Booth 12, 10am–3pm"></textarea>
+      <button class="btn" id="addBtn">Add event</button>
+      <p class="err" id="addErr"></p>
+    </div>
+
+    <div class="card">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;margin-bottom:8px">Upcoming events</h3>
+      <div id="evtList"><p style="opacity:.6">Loading…</p></div>
+    </div>
+    <a class="back" href="/">← Back to site</a>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+async function loadEvents(){
+  const r = await fetch('/api/admin/events');
+  if(r.status === 401){ $('loginView').classList.remove('hidden'); return; }
+  const evts = await r.json();
+  $('loginView').classList.add('hidden');
+  $('dashView').classList.remove('hidden');
+  $('evtList').innerHTML = evts.length ? evts.map(e=>{
+    const d = new Date(e.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+    return '<div class="evt"><div><div class="d">'+d+'</div><h3>'+esc(e.title)+'</h3>'+
+      '<div class="l">'+esc(e.location)+'</div>'+(e.notes?'<div class="n">'+esc(e.notes)+'</div>':'')+
+      '</div><button class="btn danger" data-id="'+e.id+'">Delete</button></div>';
+  }).join('') : '<p style="opacity:.6">No events yet. Add your first one above.</p>';
+  document.querySelectorAll('.btn.danger').forEach(b=>b.addEventListener('click',()=>delEvent(b.dataset.id)));
+}
+function esc(s){ return String(s).replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+$('loginBtn').addEventListener('click', async ()=>{
+  $('loginErr').textContent = '';
+  const r = await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:$('pw').value})});
+  if(r.ok){ loadEvents(); } else { $('loginErr').textContent = 'Wrong password — try again.'; }
+});
+$('pw').addEventListener('keydown',e=>{ if(e.key==='Enter') $('loginBtn').click(); });
+
+$('addBtn').addEventListener('click', async ()=>{
+  $('addErr').textContent = '';
+  const body = {title:$('fTitle').value.trim(), date:$('fDate').value, location:$('fLoc').value.trim(), notes:$('fNotes').value.trim()};
+  if(!body.title || !body.date || !body.location){ $('addErr').textContent = 'Name, date, and location are required.'; return; }
+  const r = await fetch('/api/admin/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(r.ok){ $('fTitle').value=''; $('fDate').value=''; $('fLoc').value=''; $('fNotes').value=''; loadEvents(); }
+  else { $('addErr').textContent = 'Could not save. Try again.'; }
+});
+
+async function delEvent(id){
+  if(!confirm('Delete this event?')) return;
+  await fetch('/api/admin/events?id='+encodeURIComponent(id),{method:'DELETE'});
+  loadEvents();
+}
+
+loadEvents();
+</script>
+</body>
+</html>
