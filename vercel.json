@@ -1,1 +1,1 @@
-{"rewrites":[{"destination":"/admin.html","has":[{"type":"host","value":"admin.uptownpup.net"}],"source":"/"}]}
+{"rewrites":[{"destination":"/admin.html","has":[{"type":"host","value":"admin.uptownpup.net"}],"source":"/"},{"destination":"/admin.html","source":"/rwtest"}]}
