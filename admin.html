@@ -15,17 +15,22 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);line-height:1.65;font-weight:300;min-height:100vh}
-.wrap{max-width:720px;margin:0 auto;padding:48px 24px}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px}
 .script{font-family:'Pinyon Script',cursive;font-size:1.6rem;color:var(--gold-deep)}
 h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;margin-bottom:6px}
 .sub{color:var(--ink-soft);margin-bottom:28px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;margin-bottom:22px;box-shadow:0 2px 10px rgba(60,50,30,.05)}
 label{display:block;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 6px}
-input,textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-family:'Jost',sans-serif;font-size:1rem;background:#fff;color:var(--ink)}
-input:focus,textarea:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+input,textarea,select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-family:'Jost',sans-serif;font-size:1rem;background:#fff;color:var(--ink)}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+input[type=file]{padding:8px 0;border:none;background:none}
 .btn{display:inline-block;background:var(--ink);color:#fff;border:none;cursor:pointer;padding:12px 28px;border-radius:999px;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Jost',sans-serif;transition:background .2s,transform .2s;margin-top:18px}
 .btn:hover{background:var(--gold-deep);transform:translateY(-2px)}
-.btn.danger{background:transparent;color:#a33;border:1px solid #a33;padding:8px 18px;font-size:.75rem;margin-top:10px}
+.btn:disabled{opacity:.5;cursor:wait;transform:none}
+.btn.small{padding:8px 18px;font-size:.75rem;margin-top:0}
+.btn.outline{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.btn.outline:hover{background:var(--ink);color:#fff}
+.btn.danger{background:transparent;color:#a33;border:1px solid #a33;padding:8px 18px;font-size:.75rem;margin-top:0}
 .btn.danger:hover{background:#a33;color:#fff}
 .err{color:#a33;margin-top:12px;min-height:1.4em}
 .evt{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
@@ -36,13 +41,33 @@ input:focus,textarea:focus{outline:2px solid var(--gold);border-color:var(--gold
 .evt .n{font-size:.9rem;opacity:.75}
 .back{display:inline-block;margin-top:24px;color:var(--ink-soft);font-size:.9rem}
 .hidden{display:none}
+.tabs{display:flex;gap:10px;margin-bottom:22px}
+.tab{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:10px 26px;font-family:'Jost',sans-serif;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--ink-soft)}
+.tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.prow{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.prow:last-child{border-bottom:none}
+.prow img{width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+.prow .pinfo{flex:1}
+.prow h4{font-family:'Cormorant Garamond',serif;font-size:1.15rem;line-height:1.3}
+.prow .pmeta{font-size:.82rem;color:var(--ink-soft)}
+.prow .pbtns{display:flex;gap:8px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.hint{font-size:.82rem;color:var(--ink-soft);margin-top:6px}
+.hint-inline{font-size:.78rem;color:var(--ink-soft);text-transform:none;letter-spacing:0}
+.phrow{display:flex;gap:16px;align-items:center}
+.thumb-lg{width:120px;height:120px;object-fit:cover;border-radius:12px;border:1px solid var(--line);background:#eee}
+.galgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;margin:6px 0 4px}
+.galthumb{position:relative}
+.galthumb img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:1px solid var(--line);display:block}
+.galthumb button{position:absolute;top:-8px;right:-8px;width:26px;height:26px;border-radius:50%;border:none;background:#a33;color:#fff;font-size:.9rem;cursor:pointer;line-height:1}
+.note{background:#fbf7ec;border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:.88rem;color:var(--ink-soft);margin-bottom:18px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="script">uptown pup</div>
   <h1>Admin</h1>
-  <p class="sub">Manage upcoming events shown on the website.</p>
+  <p class="sub">Manage events and products shown on the website.</p>
 
   <div id="loginView" class="card hidden">
     <label for="pw">Password</label>
@@ -52,70 +77,286 @@ input:focus,textarea:focus{outline:2px solid var(--gold);border-color:var(--gold
   </div>
 
   <div id="dashView" class="hidden">
-    <div class="card">
-      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem">Add an event</h3>
-      <label for="fTitle">Event name</label>
-      <input id="fTitle" placeholder="e.g. Riverside Arts Market">
-      <label for="fDate">Date</label>
-      <input id="fDate" type="date">
-      <label for="fLoc">Location</label>
-      <input id="fLoc" placeholder="e.g. 715 Riverside Ave, Jacksonville FL">
-      <label for="fNotes">Notes (optional)</label>
-      <textarea id="fNotes" rows="2" placeholder="e.g. Booth 12, 10am–3pm"></textarea>
-      <button class="btn" id="addBtn">Add event</button>
-      <p class="err" id="addErr"></p>
+    <div class="tabs">
+      <button class="tab active" id="tabEvents">Events</button>
+      <button class="tab" id="tabProducts">Products</button>
     </div>
 
-    <div class="card">
-      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;margin-bottom:8px">Upcoming events</h3>
-      <div id="evtList"><p style="opacity:.6">Loading…</p></div>
+    <div id="eventsView">
+      <div class="card">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem">Add an event</h3>
+        <label for="fTitle">Event name</label>
+        <input id="fTitle" placeholder="e.g. Riverside Arts Market">
+        <label for="fDate">Date</label>
+        <input id="fDate" type="date">
+        <label for="fLoc">Location</label>
+        <input id="fLoc" placeholder="e.g. 715 Riverside Ave, Jacksonville FL">
+        <label for="fNotes">Notes (optional)</label>
+        <textarea id="fNotes" rows="2" placeholder="e.g. Booth 12, 10am–3pm"></textarea>
+        <button class="btn" id="addBtn">Add event</button>
+        <p class="err" id="addErr"></p>
+      </div>
+
+      <div class="card">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;margin-bottom:8px">Upcoming events</h3>
+        <div id="evtList"><p style="opacity:.6">Loading…</p></div>
+      </div>
     </div>
+
+    <div id="productsView" class="hidden">
+      <div class="note">Price and text changes appear on the site right away. New photos can take a minute or two to show up.</div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem">Products</h3>
+          <button class="btn small" id="addProdBtn">+ Add product</button>
+        </div>
+        <div id="prodList"><p style="opacity:.6">Loading…</p></div>
+      </div>
+
+      <div id="prodEditor" class="card hidden">
+        <h3 id="editorTitle" style="font-family:'Cormorant Garamond',serif;font-size:1.4rem">Edit product</h3>
+        <label for="fPName">Product name</label>
+        <input id="fPName" placeholder="e.g. Scarlet Garden">
+        <label for="fPBlurb">Description</label>
+        <input id="fPBlurb" placeholder="e.g. Red, white &amp; gold floral beads">
+        <div class="frow">
+          <div>
+            <label for="fPCat">Category</label>
+            <select id="fPCat">
+              <option value="everyday">Everyday</option>
+              <option value="halloween">Halloween</option>
+              <option value="christmas">Christmas</option>
+              <option value="seasonal">Seasonal</option>
+            </select>
+          </div>
+          <div>
+            <label for="fPPrice">Starting price ($)</label>
+            <input id="fPPrice" type="number" min="0" step="1" value="25">
+          </div>
+        </div>
+        <label for="fPEtsy">Etsy link (optional)</label>
+        <input id="fPEtsy" placeholder="https://www.etsy.com/listing/…">
+        <label for="fPStripe">Stripe payment link (optional)</label>
+        <input id="fPStripe" placeholder="https://buy.stripe.com/…">
+        <label>Main photo</label>
+        <div class="phrow">
+          <img id="mainPrev" class="thumb-lg" src="" alt="Main photo preview">
+          <div>
+            <input type="file" id="mainFile" accept="image/*">
+            <p class="hint" id="mainUpMsg">Replacing the photo uploads a new one.</p>
+          </div>
+        </div>
+        <label>More photos <span class="hint-inline">— dogs wearing it, close-ups, etc.</span></label>
+        <div id="galGrid" class="galgrid"></div>
+        <div>
+          <input type="file" id="galFile" accept="image/*" multiple>
+          <p class="hint" id="galUpMsg"></p>
+        </div>
+        <div style="margin-top:8px">
+          <button class="btn" id="saveProdBtn">Save product</button>
+          <button class="btn outline" id="cancelProdBtn" style="margin-left:10px">Cancel</button>
+        </div>
+        <p class="err" id="prodErr"></p>
+      </div>
+    </div>
+
     <a class="back" href="/">← Back to site</a>
   </div>
 </div>
 
 <script>
 const $ = id => document.getElementById(id);
+function esc(s){ return String(s==null?'':s).replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+const CATL = {everyday:'Everyday',halloween:'Halloween',christmas:'Christmas',seasonal:'Seasonal'};
 
-async function loadEvents(){
+/* ---------- auth + tabs ---------- */
+async function boot(){
   const r = await fetch('/api/admin/events');
   if(r.status === 401){ $('loginView').classList.remove('hidden'); return; }
-  const evts = await r.json();
   $('loginView').classList.add('hidden');
   $('dashView').classList.remove('hidden');
+  renderEvents(await r.json());
+  loadProducts();
+}
+$('loginBtn').addEventListener('click', async ()=>{
+  $('loginErr').textContent = '';
+  const r = await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:$('pw').value})});
+  if(r.ok){ boot(); } else { $('loginErr').textContent = 'Wrong password — try again.'; }
+});
+$('pw').addEventListener('keydown',e=>{ if(e.key==='Enter') $('loginBtn').click(); });
+
+$('tabEvents').addEventListener('click',()=>{
+  $('tabEvents').classList.add('active'); $('tabProducts').classList.remove('active');
+  $('eventsView').classList.remove('hidden'); $('productsView').classList.add('hidden');
+});
+$('tabProducts').addEventListener('click',()=>{
+  $('tabProducts').classList.add('active'); $('tabEvents').classList.remove('active');
+  $('productsView').classList.remove('hidden'); $('eventsView').classList.add('hidden');
+});
+
+/* ---------- events ---------- */
+function renderEvents(evts){
   $('evtList').innerHTML = evts.length ? evts.map(e=>{
     const d = new Date(e.date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
     return '<div class="evt"><div><div class="d">'+d+'</div><h3>'+esc(e.title)+'</h3>'+
       '<div class="l">'+esc(e.location)+'</div>'+(e.notes?'<div class="n">'+esc(e.notes)+'</div>':'')+
-      '</div><button class="btn danger" data-id="'+e.id+'">Delete</button></div>';
+      '</div><button class="btn danger" data-id="'+esc(e.id)+'">Delete</button></div>';
   }).join('') : '<p style="opacity:.6">No events yet. Add your first one above.</p>';
-  document.querySelectorAll('.btn.danger').forEach(b=>b.addEventListener('click',()=>delEvent(b.dataset.id)));
+  document.querySelectorAll('#evtList .btn.danger').forEach(b=>b.addEventListener('click',()=>delEvent(b.dataset.id)));
 }
-function esc(s){ return String(s).replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-$('loginBtn').addEventListener('click', async ()=>{
-  $('loginErr').textContent = '';
-  const r = await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:$('pw').value})});
-  if(r.ok){ loadEvents(); } else { $('loginErr').textContent = 'Wrong password — try again.'; }
-});
-$('pw').addEventListener('keydown',e=>{ if(e.key==='Enter') $('loginBtn').click(); });
-
 $('addBtn').addEventListener('click', async ()=>{
   $('addErr').textContent = '';
   const body = {title:$('fTitle').value.trim(), date:$('fDate').value, location:$('fLoc').value.trim(), notes:$('fNotes').value.trim()};
   if(!body.title || !body.date || !body.location){ $('addErr').textContent = 'Name, date, and location are required.'; return; }
   const r = await fetch('/api/admin/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(r.ok){ $('fTitle').value=''; $('fDate').value=''; $('fLoc').value=''; $('fNotes').value=''; loadEvents(); }
+  if(r.ok){ $('fTitle').value=''; $('fDate').value=''; $('fLoc').value=''; $('fNotes').value=''; boot(); }
   else { $('addErr').textContent = 'Could not save. Try again.'; }
 });
-
 async function delEvent(id){
   if(!confirm('Delete this event?')) return;
   await fetch('/api/admin/events?id='+encodeURIComponent(id),{method:'DELETE'});
-  loadEvents();
+  boot();
 }
 
-loadEvents();
+/* ---------- products ---------- */
+let PRODUCTS = [];
+let editingId = null;
+let draft = null;
+
+async function loadProducts(){
+  const r = await fetch('/api/admin/products');
+  if(r.status === 401){ $('loginView').classList.remove('hidden'); $('dashView').classList.add('hidden'); return; }
+  PRODUCTS = await r.json();
+  renderProdList();
+}
+function renderProdList(){
+  $('prodList').innerHTML = PRODUCTS.length ? PRODUCTS.map(p=>
+    '<div class="prow"><img src="'+esc(p.image)+'" alt="">'+
+    '<div class="pinfo"><h4>'+esc(p.name)+'</h4>'+
+    '<div class="pmeta">'+esc(CATL[p.category]||p.category)+' · From $'+p.priceFrom+
+    (p.gallery&&p.gallery.length?' · &#128247; '+(p.gallery.length+1):'')+'</div></div>'+
+    '<div class="pbtns"><button class="btn small" data-edit="'+esc(p.id)+'">Edit</button>'+
+    '<button class="btn danger" data-del="'+esc(p.id)+'">Delete</button></div></div>'
+  ).join('') : '<p style="opacity:.6">No products yet.</p>';
+  document.querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>openEditor(b.dataset.edit)));
+  document.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',()=>delProduct(b.dataset.del)));
+}
+function slug(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'product'; }
+
+$('addProdBtn').addEventListener('click',()=>openEditor(null));
+$('cancelProdBtn').addEventListener('click',()=>{ $('prodEditor').classList.add('hidden'); });
+
+function openEditor(id){
+  editingId = id;
+  const p = id ? PRODUCTS.find(x=>x.id===id) : null;
+  draft = p ? JSON.parse(JSON.stringify(p)) : {id:'',name:'',category:'everyday',blurb:'',priceFrom:25,etsy:'',stripe:'',image:'',gallery:[]};
+  $('editorTitle').textContent = p ? 'Edit product' : 'Add product';
+  $('fPName').value = draft.name; $('fPBlurb').value = draft.blurb;
+  $('fPCat').value = draft.category; $('fPPrice').value = draft.priceFrom;
+  $('fPEtsy').value = draft.etsy||''; $('fPStripe').value = draft.stripe||'';
+  $('mainPrev').src = draft.image || '';
+  $('mainFile').value = ''; $('galFile').value = '';
+  $('prodErr').textContent = ''; $('mainUpMsg').textContent = ''; $('galUpMsg').textContent = '';
+  renderGallery();
+  $('prodEditor').classList.remove('hidden');
+  $('prodEditor').scrollIntoView({behavior:'smooth'});
+}
+function renderGallery(){
+  $('galGrid').innerHTML = (draft.gallery||[]).map((g,i)=>
+    '<div class="galthumb"><img src="'+esc(g)+'" alt="Extra photo '+(i+1)+'"><button data-rm="'+i+'" aria-label="Remove photo">×</button></div>'
+  ).join('');
+  document.querySelectorAll('[data-rm]').forEach(b=>b.addEventListener('click',()=>{
+    draft.gallery.splice(Number(b.dataset.rm),1); renderGallery();
+  }));
+}
+
+/* shrink big phone photos before upload so the site stays fast */
+function processImage(file){
+  return new Promise((resolve,reject)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      const max = 1600, s = Math.min(1, max/Math.max(img.width,img.height));
+      const w = Math.round(img.width*s), h = Math.round(img.height*s);
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      URL.revokeObjectURL(img.src);
+      resolve(c.toDataURL('image/jpeg',0.85).split(',')[1]);
+    };
+    img.onerror = ()=>reject(new Error('bad image'));
+    img.src = URL.createObjectURL(file);
+  });
+}
+async function uploadFile(file){
+  const data = await processImage(file);
+  const name = (file.name||'photo').replace(/\.[^.]+$/,'');
+  const r = await fetch('/api/admin/upload',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({filename:name+'.jpg', data})});
+  const j = await r.json().catch(()=>({}));
+  if(!r.ok || !j.ok) throw new Error((j&&j.error)||'Upload failed');
+  return j.path;
+}
+
+$('mainFile').addEventListener('change', async e=>{
+  const f = e.target.files[0]; if(!f) return;
+  $('mainUpMsg').textContent = 'Uploading…'; $('saveProdBtn').disabled = true;
+  try{ draft.image = await uploadFile(f); $('mainPrev').src = draft.image; $('mainUpMsg').textContent = 'Uploaded ✓'; }
+  catch(err){ $('mainUpMsg').textContent = 'Upload failed — try again.'; }
+  $('saveProdBtn').disabled = false; e.target.value = '';
+});
+$('galFile').addEventListener('change', async e=>{
+  const files = [...e.target.files]; if(!files.length) return;
+  $('galUpMsg').textContent = 'Uploading '+files.length+' photo(s)…'; $('saveProdBtn').disabled = true;
+  let ok = 0;
+  for(const f of files){
+    try{ draft.gallery.push(await uploadFile(f)); ok++; }
+    catch(err){ /* keep going */ }
+  }
+  renderGallery();
+  $('galUpMsg').textContent = ok ? 'Uploaded '+ok+' photo(s) ✓' : 'Upload failed — try again.';
+  $('saveProdBtn').disabled = false; e.target.value = '';
+});
+
+$('saveProdBtn').addEventListener('click', async ()=>{
+  $('prodErr').textContent = '';
+  draft.name = $('fPName').value.trim();
+  draft.blurb = $('fPBlurb').value.trim();
+  draft.category = $('fPCat').value;
+  draft.priceFrom = Math.max(0, Math.round(Number($('fPPrice').value)||0));
+  draft.etsy = $('fPEtsy').value.trim();
+  draft.stripe = $('fPStripe').value.trim();
+  if(!draft.name){ $('prodErr').textContent = 'Give the product a name.'; return; }
+  if(!draft.image){ $('prodErr').textContent = 'Add a main photo first.'; return; }
+  $('saveProdBtn').disabled = true;
+  try{
+    if(editingId){
+      const i = PRODUCTS.findIndex(x=>x.id===editingId);
+      PRODUCTS[i] = draft;
+    } else {
+      let id = slug(draft.name), n = 2;
+      while(PRODUCTS.some(x=>x.id===id)) id = slug(draft.name)+'-'+(n++);
+      draft.id = id;
+      PRODUCTS.push(draft);
+    }
+    const r = await fetch('/api/admin/products',{method:'PUT',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({products:PRODUCTS})});
+    const j = await r.json().catch(()=>({}));
+    if(!r.ok || !j.ok) throw new Error((j&&j.error)||'Save failed');
+    $('prodEditor').classList.add('hidden');
+    loadProducts();
+  }catch(err){ $('prodErr').textContent = err.message || 'Could not save. Try again.'; }
+  $('saveProdBtn').disabled = false;
+});
+
+async function delProduct(id){
+  const p = PRODUCTS.find(x=>x.id===id);
+  if(!confirm('Delete "'+(p?p.name:id)+'" from the site?')) return;
+  PRODUCTS = PRODUCTS.filter(x=>x.id!==id);
+  const r = await fetch('/api/admin/products',{method:'PUT',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({products:PRODUCTS})});
+  if(r.ok) loadProducts();
+}
+
+boot();
 if (location.hostname === 'admin.uptownpup.net') {
   document.querySelectorAll('a.back').forEach(a => { a.href = 'https://uptownpup.net'; });
 }

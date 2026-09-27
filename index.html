@@ -124,6 +124,12 @@ footer .fine{margin-top:22px;font-size:.82rem;opacity:.65}
 #lightbox figure{max-width:min(920px,94vw);text-align:center}
 #lightbox img{max-width:100%;max-height:80vh;border-radius:12px}
 #lightbox figcaption{color:#fff;margin-top:12px;font-family:'Cormorant Garamond',serif;font-size:1.3rem}
+.card .ph{position:relative}
+.phcount{position:absolute;right:10px;bottom:10px;background:rgba(20,18,14,.7);color:#fff;font-size:.75rem;letter-spacing:.05em;padding:4px 12px;border-radius:999px;pointer-events:none}
+#lbPrev,#lbNext{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.4);color:#fff;font-size:2rem;line-height:1;width:52px;height:52px;border-radius:50%;cursor:pointer;z-index:2}
+#lbPrev{left:16px}
+#lbNext{right:16px}
+#lbPrev:hover,#lbNext:hover{background:rgba(255,255,255,.3)}
 @media(max-width:760px){
   .nav-links a.nl{display:none}
   .about-grid{grid-template-columns:1fr}
@@ -271,77 +277,38 @@ footer .fine{margin-top:22px;font-size:.82rem;opacity:.65}
   </div>
 </footer>
 
-<div id="lightbox"><figure><img id="lbImg" src="" alt=""><figcaption id="lbCap"></figcaption></figure></div>
+<div id="lightbox"><button id="lbPrev" aria-label="Previous photo">&#8249;</button><figure><img id="lbImg" src="" alt=""><figcaption id="lbCap"></figcaption></figure><button id="lbNext" aria-label="Next photo">&#8250;</button></div>
 
 <script>
 const ETSY = "https://www.etsy.com/shop/UpTownPupCreations";
-const PRODUCTS = [
-["IMG_5368.jpeg","Scarlet Garden","everyday","Red, white & gold floral beads","https://www.etsy.com/listing/4579130117/beaded-dog-necklace-red-flowers-pearls"],
-["IMG_5369.jpeg","Rainbow Pastel","everyday","Soft pastel rainbow beads","https://www.etsy.com/listing/4579159936/beaded-dog-necklace-pastel-rainbow-be"],
-["IMG_5370.jpeg","Daisy Meadow","everyday","Blush daisies on pastel beads"],
-["IMG_5372.jpeg","Galaxy Glam","everyday","Cosmic purple & blue sparkle beads"],
-["IMG_5373.jpeg","Midnight Pearl","everyday","Black, white & silver monochrome"],
-["IMG_5376.jpeg","Champagne Noir","everyday","Black & champagne gold"],
-["IMG_5377.jpeg","Bronze Paw","everyday","Warm bronze with paw-print bead"],
-["IMG_5378.jpeg","Sunflower Neutral","everyday","Earthy neutrals with sunflower bead"],
-["IMG_5385.jpeg","Golden Hour","everyday","Black & gold with bone clasp"],
-["IMG_5386.jpeg","Pearl Noir","everyday","Black & white pearls"],
-["IMG_5389.jpeg","Autumn Copper","everyday","Copper & bronze fall tones"],
-["IMG_5392.jpeg","Copper Glow","everyday","Glowing bronze & copper beads"],
-["IMG_5393.jpeg","Bronze Ember","everyday","Smoky bronze & black"],
-["IMG_5394.jpeg","Snowflakes","everyday","Sea blue & white snowflake beads"],
-["IMG_5395.jpeg","Ros\u00e9","everyday","Pink & bronze"],
-["IMG_5403.jpeg","Mermaid Bow","everyday","Teal & violet with bow bead"],
-["IMG_5404.jpeg","Confetti","everyday","Pastel confetti beads"],
-["IMG_5379.jpeg","Harvest Moon","halloween","Orange, purple & black","https://www.etsy.com/listing/4579120483/beaded-martingale-dog-collar-halloween"],
-["IMG_5382.jpeg","Spooky Sweet","halloween","Purple & orange mini beads"],
-["IMG_5388.jpeg","Witching Hour","halloween","Orange & violet with pumpkin bead"],
-["IMG_5390.jpeg","Trick or Treat","halloween","Purple & orange sparkle"],
-["IMG_5402.jpeg","Pumpkin Patch","halloween","Orange, purple & black"],
-["IMG_5380.jpeg","Classic Christmas","christmas","Red & green"],
-["IMG_5381.jpeg","Holly Jolly","christmas","Red, green & white"],
-["IMG_5383.jpeg","Merry Mini","christmas","Festive multicolor"],
-["IMG_5387.jpeg","Peppermint Star","christmas","Red & white with star beads","https://www.etsy.com/listing/4579123995/beaded-martingale-dog-collar-red-white"],
-["IMG_5391.jpeg","Mistletoe","christmas","Green, red & white"],
-["IMG_5396.jpeg","Candy Cane","christmas","Red & white stripes"],
-["IMG_5398.jpeg","Starlight","christmas","Red, gold & white with stars"],
-["IMG_5400.jpeg","Holiday Gold","christmas","Red & gold celebration","https://www.etsy.com/listing/4579134320/beaded-martingale-dog-collar-christmas"],
-["IMG_5401.jpeg","Jolly Stripe","christmas","Green, red & white stripes"],
-["IMG_5374.jpeg","Americana","seasonal","Red, white & blue"],
-["IMG_5375.jpeg","Fiesta","seasonal","Teal & red with cactus beads"],
-["IMG_5399.jpeg","Sea Turtle","seasonal","Blue & green with turtle beads","https://www.etsy.com/listing/4577192586/beaded-martingale-dog-collar-colortheme"],
-["IMG_5405.jpeg","Beachcomber","seasonal","Sandy neutrals & blue with turtle beads"],
-["IMG_gameday.jpg","Gameday","seasonal","Team colors, 12mm beads","https://www.etsy.com/listing/4579165638/small-dog-gameday-beaded-collar-team"],
-["IMG_hawaiian.jpg","Hawaiian Getaway","seasonal","Hawaiian shirt & shorts print, bone clasp","https://www.etsy.com/listing/4579144770/beaded-dog-necklace-hawaiian-shirt"]
-];
 const CATLABEL = {everyday:"Everyday",halloween:"Halloween",christmas:"Christmas",seasonal:"Seasonal"};
-// Stripe Payment Links per product. Paste each product's link from the Stripe dashboard
-// (https://dashboard.stripe.com/payment-links). The "Buy with Stripe" button only shows
-// for products that have a link here.
-const STRIPE = {
-  //"Sea Turtle": "https://buy.stripe.com/your-link-here",
-};
-// Products with chains, designer purse charms, or specialty beads start at $35
-const FROM35 = new Set(["Midnight Pearl","Pearl Noir","Autumn Copper","Copper Glow","Bronze Ember","Snowflakes","Ros\u00e9","Mermaid Bow","Spooky Sweet","Trick or Treat","Pumpkin Patch","Merry Mini","Peppermint Star","Mistletoe","Candy Cane","Starlight","Holiday Gold","Jolly Stripe","Beachcomber","Bronze Paw","Sunflower Neutral","Confetti","Witching Hour","Fiesta","Sea Turtle","Scarlet Garden","Daisy Meadow","Americana"]);
 const grid = document.getElementById('grid');
 const countNote = document.getElementById('countNote');
-PRODUCTS.forEach(p=>{
-  const [file,name,cat,blurb,link] = p;
-  const url = link || ETSY + "?search_query=" + encodeURIComponent(name + " beaded dog collar");
-  const el = document.createElement('article');
-  el.className = 'card'; el.dataset.cat = cat;
-  el.innerHTML =
-    '<div class="ph"><img loading="lazy" src="assets/'+file+'" alt="'+name+' beaded dog collar"></div>'+
-    '<div class="body"><div class="cat">'+CATLABEL[cat]+'</div><h3>'+name+'</h3>'+
-    '<p class="blurb">'+blurb+'.</p>'+
-    '<div class="row"><span class="price">From $'+(FROM35.has(name)?'35':'25')+'</span></div>'+
-    '<div class="btnrow">'+
-    '<a class="buybtn" href="'+url+'" target="_blank" rel="noopener">Buy on Etsy</a>'+
-    (STRIPE[name]?'<a class="buybtn alt" href="'+STRIPE[name]+'" target="_blank" rel="noopener">Buy with Stripe</a>':'')+
-    '</div></div>';
-  el.querySelector('.ph').addEventListener('click',()=>openLB(file,name));
-  grid.appendChild(el);
-});
+let PRODUCTS = [];
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function photosOf(p){ return [p.image].concat(p.gallery||[]); }
+function renderProducts(){
+  grid.innerHTML = '';
+  PRODUCTS.forEach(p=>{
+    const url = p.etsy || ETSY + "?search_query=" + encodeURIComponent(p.name + " beaded dog collar");
+    const n = photosOf(p).length;
+    const el = document.createElement('article');
+    el.className = 'card'; el.dataset.cat = p.category;
+    el.innerHTML =
+      '<div class="ph"><img loading="lazy" src="'+esc(p.image)+'" alt="'+esc(p.name)+' beaded dog collar">'+
+      (n>1?'<span class="phcount">&#128247; '+n+'</span>':'')+'</div>'+
+      '<div class="body"><div class="cat">'+esc(CATLABEL[p.category]||p.category)+'</div><h3>'+esc(p.name)+'</h3>'+
+      '<p class="blurb">'+esc(p.blurb)+'.</p>'+
+      '<div class="row"><span class="price">From $'+Math.max(0,Math.round(Number(p.priceFrom)||0))+'</span></div>'+
+      '<div class="btnrow">'+
+      '<a class="buybtn" href="'+esc(url)+'" target="_blank" rel="noopener">Buy on Etsy</a>'+
+      (p.stripe?'<a class="buybtn alt" href="'+esc(p.stripe)+'" target="_blank" rel="noopener">Buy with Stripe</a>':'')+
+      '</div></div>';
+    el.querySelector('.ph').addEventListener('click',()=>openLB(p,0));
+    grid.appendChild(el);
+  });
+  updateCount();
+}
 function updateCount(){
   const vis = [...grid.children].filter(c=>!c.classList.contains('hide')).length;
   countNote.textContent = "Showing "+vis+" of "+PRODUCTS.length+" designs";
@@ -354,11 +321,35 @@ document.getElementById('filters').addEventListener('click',e=>{
   [...grid.children].forEach(c=>c.classList.toggle('hide', f!=='all' && c.dataset.cat!==f));
   updateCount();
 });
-updateCount();
-const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lbImg'), lbCap = document.getElementById('lbCap');
-function openLB(file,name){ lbImg.src = "assets/"+file; lbImg.alt = name+" beaded dog collar"; lbCap.textContent = name; lb.classList.add('open'); }
+fetch('/api/products').then(r=>{ if(!r.ok) throw 0; return r.json(); }).then(list=>{
+  PRODUCTS = Array.isArray(list) ? list : [];
+  renderProducts();
+}).catch(()=>{
+  grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;opacity:.65">Could not load the collection &mdash; please refresh the page.</p>';
+});
+const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lbImg'), lbCap = document.getElementById('lbCap'),
+      lbPrev = document.getElementById('lbPrev'), lbNext = document.getElementById('lbNext');
+let lbPhotos = [], lbIdx = 0, lbName = '';
+function openLB(p,idx){ lbPhotos = photosOf(p); lbIdx = idx||0; lbName = p.name; showLB(); lb.classList.add('open'); }
+function showLB(){
+  lbImg.src = lbPhotos[lbIdx];
+  lbImg.alt = lbName + ' photo ' + (lbIdx+1);
+  lbCap.textContent = lbName + (lbPhotos.length>1 ? '  \u00b7  '+(lbIdx+1)+' / '+lbPhotos.length : '');
+  const multi = lbPhotos.length>1;
+  lbPrev.style.display = multi?'':'none';
+  lbNext.style.display = multi?'':'none';
+}
+function stepLB(d){ lbIdx = (lbIdx+d+lbPhotos.length)%lbPhotos.length; showLB(); }
+lbPrev.addEventListener('click',e=>{ e.stopPropagation(); stepLB(-1); });
+lbNext.addEventListener('click',e=>{ e.stopPropagation(); stepLB(1); });
 lb.addEventListener('click',()=>lb.classList.remove('open'));
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') lb.classList.remove('open'); });
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') lb.classList.remove('open');
+  if(lb.classList.contains('open') && lbPhotos.length>1){
+    if(e.key==='ArrowLeft') stepLB(-1);
+    if(e.key==='ArrowRight') stepLB(1);
+  }
+});
 // Upcoming events (managed from /admin)
 fetch('/api/events').then(r=>r.json()).then(evts=>{
   const grid = document.getElementById('eventGrid');
