@@ -206,6 +206,7 @@ footer .fine{margin-top:22px;font-size:.82rem;opacity:.65}
       </div>
     </div>
     <p class="price-note">"Every collar is handmade to order in your pup's size."</p>
+    <p class="price-note">Collars with chains, designer purse charms, or specialty beads start at $35.</p>
   </div>
 </section>
 
@@ -288,7 +289,7 @@ const PRODUCTS = [
 ["IMG_5389.jpeg","Autumn Copper","everyday","Copper & bronze fall tones"],
 ["IMG_5392.jpeg","Copper Glow","everyday","Glowing bronze & copper beads"],
 ["IMG_5393.jpeg","Bronze Ember","everyday","Smoky bronze & black"],
-["IMG_5394.jpeg","Ocean Mist","everyday","Sea blue & white beads"],
+["IMG_5394.jpeg","Snowflakes","everyday","Sea blue & white snowflake beads"],
 ["IMG_5395.jpeg","Ros\u00e9","everyday","Pink & bronze"],
 ["IMG_5403.jpeg","Mermaid Bow","everyday","Teal & violet with bow bead"],
 ["IMG_5404.jpeg","Confetti","everyday","Pastel confetti beads"],
@@ -320,6 +321,8 @@ const CATLABEL = {everyday:"Everyday",halloween:"Halloween",christmas:"Christmas
 const STRIPE = {
   //"Sea Turtle": "https://buy.stripe.com/your-link-here",
 };
+// Products with chains, designer purse charms, or specialty beads start at $35
+const FROM35 = new Set(["Midnight Pearl","Pearl Noir","Autumn Copper","Copper Glow","Bronze Ember","Snowflakes","Ros\u00e9","Mermaid Bow","Spooky Sweet","Trick or Treat","Pumpkin Patch","Merry Mini","Peppermint Star","Mistletoe","Candy Cane","Starlight","Holiday Gold","Jolly Stripe","Beachcomber","Bronze Paw","Sunflower Neutral","Confetti","Witching Hour","Fiesta","Sea Turtle","Scarlet Garden","Daisy Meadow","Americana"]);
 const grid = document.getElementById('grid');
 const countNote = document.getElementById('countNote');
 PRODUCTS.forEach(p=>{
@@ -331,7 +334,7 @@ PRODUCTS.forEach(p=>{
     '<div class="ph"><img loading="lazy" src="assets/'+file+'" alt="'+name+' beaded dog collar"></div>'+
     '<div class="body"><div class="cat">'+CATLABEL[cat]+'</div><h3>'+name+'</h3>'+
     '<p class="blurb">'+blurb+'.</p>'+
-    '<div class="row"><span class="price">From $25</span></div>'+
+    '<div class="row"><span class="price">From $'+(FROM35.has(name)?'35':'25')+'</span></div>'+
     '<div class="btnrow">'+
     '<a class="buybtn" href="'+url+'" target="_blank" rel="noopener">Buy on Etsy</a>'+
     (STRIPE[name]?'<a class="buybtn alt" href="'+STRIPE[name]+'" target="_blank" rel="noopener">Buy with Stripe</a>':'')+
