@@ -61,6 +61,8 @@ input[type=file]{padding:8px 0;border:none;background:none}
 .galthumb img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:1px solid var(--line);display:block}
 .galthumb button{position:absolute;top:-8px;right:-8px;width:26px;height:26px;border-radius:50%;border:none;background:#a33;color:#fff;font-size:.9rem;cursor:pointer;line-height:1}
 .note{background:#fbf7ec;border:1px solid var(--line);border-radius:10px;padding:12px 16px;font-size:.88rem;color:var(--ink-soft);margin-bottom:18px}
+.checkrow{display:flex!important;align-items:center;gap:10px;cursor:pointer}
+.checkrow input{width:auto!important;margin:0}
 </style>
 </head>
 <body>
@@ -80,6 +82,7 @@ input[type=file]{padding:8px 0;border:none;background:none}
     <div class="tabs">
       <button class="tab active" id="tabEvents">Events</button>
       <button class="tab" id="tabProducts">Products</button>
+      <button class="tab" id="tabPromo">Promo</button>
     </div>
 
     <div id="eventsView">
@@ -160,6 +163,32 @@ input[type=file]{padding:8px 0;border:none;background:none}
       </div>
     </div>
 
+    <div id="promoView" class="hidden">
+      <div class="note">When enabled, this deal pops up once for each visitor when they first open the site.</div>
+      <div class="card">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem">Deal popup</h3>
+        <label class="checkrow"><input type="checkbox" id="fPromoActive"><span>Show this deal popup</span></label>
+        <label for="fPromoTitle">Title</label>
+        <input id="fPromoTitle" placeholder="e.g. Fall Sale!">
+        <label for="fPromoMsg">Message</label>
+        <textarea id="fPromoMsg" rows="2" placeholder="e.g. 20% off all Halloween collars through October"></textarea>
+        <label for="fPromoCode">Promo code</label>
+        <input id="fPromoCode" placeholder="e.g. SPOOKY20">
+        <div class="frow">
+          <div><label for="fPromoStart">Start date (optional)</label><input id="fPromoStart" type="date"></div>
+          <div><label for="fPromoEnd">End date (optional)</label><input id="fPromoEnd" type="date"></div>
+        </div>
+        <label for="fPromoCta">Button text</label>
+        <input id="fPromoCta" placeholder="Shop the sale">
+        <label for="fPromoLink">Button link</label>
+        <input id="fPromoLink" placeholder="https://www.etsy.com/shop/UpTownPupCreations">
+        <label class="checkrow"><input type="checkbox" id="fPromoReshow"><span>Show again to visitors who already saw it</span></label>
+        <button class="btn" id="savePromoBtn">Save deal</button>
+        <p class="err" id="promoErr"></p>
+        <p class="hint" id="promoSaved"></p>
+      </div>
+    </div>
+
     <a class="back" href="/">← Back to site</a>
   </div>
 </div>
@@ -177,6 +206,7 @@ async function boot(){
   $('dashView').classList.remove('hidden');
   renderEvents(await r.json());
   loadProducts();
+  loadPromo();
 }
 $('loginBtn').addEventListener('click', async ()=>{
   $('loginErr').textContent = '';
@@ -185,14 +215,15 @@ $('loginBtn').addEventListener('click', async ()=>{
 });
 $('pw').addEventListener('keydown',e=>{ if(e.key==='Enter') $('loginBtn').click(); });
 
-$('tabEvents').addEventListener('click',()=>{
-  $('tabEvents').classList.add('active'); $('tabProducts').classList.remove('active');
-  $('eventsView').classList.remove('hidden'); $('productsView').classList.add('hidden');
-});
-$('tabProducts').addEventListener('click',()=>{
-  $('tabProducts').classList.add('active'); $('tabEvents').classList.remove('active');
-  $('productsView').classList.remove('hidden'); $('eventsView').classList.add('hidden');
-});
+function switchTab(which){
+  ['Events','Products','Promo'].forEach(t=>{
+    $('tab'+t).classList.toggle('active', t===which);
+    $(t.toLowerCase()+'View').classList.toggle('hidden', t!==which);
+  });
+}
+$('tabEvents').addEventListener('click',()=>switchTab('Events'));
+$('tabProducts').addEventListener('click',()=>switchTab('Products'));
+$('tabPromo').addEventListener('click',()=>switchTab('Promo'));
 
 /* ---------- events ---------- */
 function renderEvents(evts){
@@ -355,6 +386,51 @@ async function delProduct(id){
     body:JSON.stringify({products:PRODUCTS})});
   if(r.ok) loadProducts();
 }
+
+/* ---------- deal popup ---------- */
+let PROMO = null;
+async function loadPromo(){
+  const r = await fetch('/api/admin/promo');
+  if(!r.ok) return;
+  PROMO = await r.json();
+  if(!PROMO) PROMO = {active:false};
+  $('fPromoActive').checked = !!PROMO.active;
+  $('fPromoTitle').value = PROMO.title||'';
+  $('fPromoMsg').value = PROMO.message||'';
+  $('fPromoCode').value = PROMO.code||'';
+  $('fPromoStart').value = PROMO.startsAt||'';
+  $('fPromoEnd').value = PROMO.endsAt||'';
+  $('fPromoCta').value = PROMO.ctaText||'';
+  $('fPromoLink').value = PROMO.link||'';
+  $('fPromoReshow').checked = false;
+}
+$('savePromoBtn').addEventListener('click', async ()=>{
+  $('promoErr').textContent = ''; $('promoSaved').textContent = '';
+  const title = $('fPromoTitle').value.trim();
+  if($('fPromoActive').checked && !title){ $('promoErr').textContent = 'Give the deal a title.'; return; }
+  const isNew = !PROMO || !PROMO.id;
+  const promo = {
+    id: (PROMO && PROMO.id) ? PROMO.id : slug(title||'deal')+'-'+Date.now().toString(36),
+    active: $('fPromoActive').checked,
+    title: title,
+    message: $('fPromoMsg').value.trim(),
+    code: $('fPromoCode').value.trim(),
+    ctaText: $('fPromoCta').value.trim()||'Shop now',
+    link: $('fPromoLink').value.trim(),
+    startsAt: $('fPromoStart').value,
+    endsAt: $('fPromoEnd').value,
+    updatedAt: (isNew || $('fPromoReshow').checked) ? new Date().toISOString() : (PROMO.updatedAt||'')
+  };
+  $('savePromoBtn').disabled = true;
+  try{
+    const r = await fetch('/api/admin/promo',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({promo})});
+    const j = await r.json().catch(()=>({}));
+    if(!r.ok || !j.ok) throw new Error((j&&j.error)||'Save failed');
+    PROMO = promo;
+    $('promoSaved').textContent = promo.active ? 'Deal is live — visitors will see it on their next first visit.' : 'Deal saved (currently off).';
+  }catch(err){ $('promoErr').textContent = err.message || 'Could not save. Try again.'; }
+  $('savePromoBtn').disabled = false;
+});
 
 boot();
 if (location.hostname === 'admin.uptownpup.net') {

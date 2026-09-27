@@ -130,6 +130,19 @@ footer .fine{margin-top:22px;font-size:.82rem;opacity:.65}
 #lbPrev{left:16px}
 #lbNext{right:16px}
 #lbPrev:hover,#lbNext:hover{background:rgba(255,255,255,.3)}
+/* promo popup */
+#promoPop{position:fixed;inset:0;background:rgba(20,18,14,.55);display:none;align-items:center;justify-content:center;z-index:200;padding:24px}
+#promoPop.open{display:flex}
+.pp-card{position:relative;background:var(--cream);border:1px solid var(--line);border-radius:20px;padding:38px 34px 32px;max-width:420px;width:100%;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.25);animation:ppIn .35s ease}
+@keyframes ppIn{from{transform:translateY(16px) scale(.97);opacity:0}}
+.pp-card .script{font-size:1.7rem;color:var(--gold-deep)}
+.pp-card h3{font-size:1.9rem;margin:4px 0 8px}
+.pp-card p{color:var(--ink-soft)}
+#ppClose{position:absolute;top:8px;right:14px;background:none;border:none;font-size:1.8rem;cursor:pointer;color:var(--ink-soft);line-height:1}
+#ppCode{margin:18px 0 4px;background:#fff;border:2px dashed var(--gold);border-radius:12px;padding:12px 26px;font-family:'Jost',sans-serif;font-size:1.3rem;letter-spacing:.18em;font-weight:600;color:var(--ink);cursor:pointer;display:inline-flex;flex-direction:column;gap:2px;align-items:center}
+#ppCopyHint{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:400}
+#ppCopied{color:var(--gold-deep);font-weight:500;min-height:1.5em;margin:0}
+#ppCta{margin-top:8px}
 @media(max-width:760px){
   .nav-links a.nl{display:none}
   .about-grid{grid-template-columns:1fr}
@@ -279,6 +292,16 @@ footer .fine{margin-top:22px;font-size:.82rem;opacity:.65}
 
 <div id="lightbox"><button id="lbPrev" aria-label="Previous photo">&#8249;</button><figure><img id="lbImg" src="" alt=""><figcaption id="lbCap"></figcaption></figure><button id="lbNext" aria-label="Next photo">&#8250;</button></div>
 
+<div id="promoPop"><div class="pp-card">
+  <button id="ppClose" aria-label="Close">&#215;</button>
+  <div class="script">special deal</div>
+  <h3 id="ppTitle"></h3>
+  <p id="ppMsg"></p>
+  <div><button id="ppCode"><span id="ppCodeText"></span><span id="ppCopyHint">tap to copy</span></button></div>
+  <p id="ppCopied" class="hidden">Copied! &#10003;</p>
+  <div><a id="ppCta" class="btn gold" href="#" target="_blank" rel="noopener"></a></div>
+</div></div>
+
 <script>
 const ETSY = "https://www.etsy.com/shop/UpTownPupCreations";
 const CATLABEL = {everyday:"Everyday",halloween:"Halloween",christmas:"Christmas",seasonal:"Seasonal"};
@@ -350,6 +373,38 @@ document.addEventListener('keydown',e=>{
     if(e.key==='ArrowRight') stepLB(1);
   }
 });
+// Deal popup (managed from /admin) — shows once per visitor per deal
+fetch('/api/promo').then(r=>r.json()).then(p=>{
+  if(!p || !p.active) return;
+  const today = new Date().toISOString().slice(0,10);
+  if(p.startsAt && today < p.startsAt) return;
+  if(p.endsAt && today > p.endsAt) return;
+  const key = p.updatedAt || p.id || 'promo';
+  if(localStorage.getItem('up_promo_seen') === key) return;
+  const pop = document.getElementById('promoPop');
+  document.getElementById('ppTitle').textContent = p.title || 'Special deal';
+  document.getElementById('ppMsg').textContent = p.message || '';
+  const codeBtn = document.getElementById('ppCode');
+  if(p.code){ document.getElementById('ppCodeText').textContent = p.code; }
+  else { codeBtn.style.display = 'none'; }
+  const cta = document.getElementById('ppCta');
+  cta.textContent = p.ctaText || 'Shop now';
+  cta.href = p.link || ETSY;
+  document.getElementById('ppClose').addEventListener('click',()=>pop.classList.remove('open'));
+  pop.addEventListener('click',e=>{ if(e.target===pop) pop.classList.remove('open'); });
+  codeBtn.addEventListener('click', async ()=>{
+    const code = document.getElementById('ppCodeText').textContent;
+    try{ await navigator.clipboard.writeText(code); }
+    catch(e){
+      const t = document.createElement('textarea'); t.value = code;
+      document.body.appendChild(t); t.select();
+      try{ document.execCommand('copy'); }catch(_){}
+      t.remove();
+    }
+    document.getElementById('ppCopied').classList.remove('hidden');
+  });
+  setTimeout(()=>{ pop.classList.add('open'); localStorage.setItem('up_promo_seen', key); }, 1500);
+}).catch(()=>{});
 // Upcoming events (managed from /admin)
 fetch('/api/events').then(r=>r.json()).then(evts=>{
   const grid = document.getElementById('eventGrid');
