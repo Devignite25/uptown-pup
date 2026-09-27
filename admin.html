@@ -116,6 +116,9 @@ async function delEvent(id){
 }
 
 loadEvents();
+if (location.hostname === 'admin.uptownpup.net') {
+  document.querySelectorAll('a.back').forEach(a => { a.href = 'https://uptownpup.net'; });
+}
 </script>
 </body>
 </html>
