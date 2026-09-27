@@ -135,12 +135,14 @@ input[type=file]{padding:8px 0;border:none;background:none}
           <div>
             <label for="fPPrice">Starting price ($)</label>
             <input id="fPPrice" type="number" min="0" step="1" value="25">
+            <p class="hint">If you change this, also replace the Stripe link below — the old link still charges the old price.</p>
           </div>
         </div>
         <label for="fPEtsy">Etsy link (optional)</label>
         <input id="fPEtsy" placeholder="https://www.etsy.com/listing/…">
         <label for="fPStripe">Stripe payment link (optional)</label>
         <input id="fPStripe" placeholder="https://buy.stripe.com/…">
+        <p class="hint">Make this in your Stripe dashboard (Payment Links) for the exact price above. A link created for $35 keeps charging $35 even if the price here changes.</p>
         <label>Main photo</label>
         <div class="phrow">
           <img id="mainPrev" class="thumb-lg" src="" alt="Main photo preview">
