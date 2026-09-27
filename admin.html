@@ -69,7 +69,7 @@ input[type=file]{padding:8px 0;border:none;background:none}
 <div class="wrap">
   <div class="script">uptown pup</div>
   <h1>Admin</h1>
-  <p class="sub">Manage events and products shown on the website.</p>
+  <p class="sub">Manage events, products, deals, and gallery photos.</p>
 
   <div id="loginView" class="card hidden">
     <label for="pw">Password</label>
@@ -83,6 +83,7 @@ input[type=file]{padding:8px 0;border:none;background:none}
       <button class="tab active" id="tabEvents">Events</button>
       <button class="tab" id="tabProducts">Products</button>
       <button class="tab" id="tabPromo">Promo</button>
+      <button class="tab" id="tabGallery">Gallery</button>
     </div>
 
     <div id="eventsView">
@@ -199,6 +200,30 @@ input[type=file]{padding:8px 0;border:none;background:none}
       </div>
     </div>
 
+    <div id="galleryView" class="hidden">
+      <div class="note">New photos can take a minute or two to show up on the gallery page.</div>
+      <div class="card">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem">Add a photo</h3>
+        <label>Photo</label>
+        <div class="phrow">
+          <img id="galPrev" class="thumb-lg" src="" alt="Gallery photo preview">
+          <div>
+            <input type="file" id="galFile" accept="image/*">
+            <p class="hint" id="galUpMsg"></p>
+          </div>
+        </div>
+        <label for="fGalCap">Caption (optional) — e.g. the dog's name</label>
+        <input id="fGalCap" placeholder="e.g. Bella" maxlength="120">
+        <button class="btn" id="addGalBtn">Add to gallery</button>
+        <p class="err" id="galErr"></p>
+      </div>
+
+      <div class="card">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;margin-bottom:8px">Gallery photos</h3>
+        <div id="galList"><p style="opacity:.6">Loading…</p></div>
+      </div>
+    </div>
+
     <a class="back" href="/">← Back to site</a>
   </div>
 </div>
@@ -217,6 +242,7 @@ async function boot(){
   renderEvents(await r.json());
   loadProducts();
   loadPromo();
+  loadGallery();
 }
 $('loginBtn').addEventListener('click', async ()=>{
   $('loginErr').textContent = '';
@@ -226,7 +252,7 @@ $('loginBtn').addEventListener('click', async ()=>{
 $('pw').addEventListener('keydown',e=>{ if(e.key==='Enter') $('loginBtn').click(); });
 
 function switchTab(which){
-  ['Events','Products','Promo'].forEach(t=>{
+  ['Events','Products','Promo','Gallery'].forEach(t=>{
     $('tab'+t).classList.toggle('active', t===which);
     $(t.toLowerCase()+'View').classList.toggle('hidden', t!==which);
   });
@@ -234,6 +260,7 @@ function switchTab(which){
 $('tabEvents').addEventListener('click',()=>switchTab('Events'));
 $('tabProducts').addEventListener('click',()=>switchTab('Products'));
 $('tabPromo').addEventListener('click',()=>switchTab('Promo'));
+$('tabGallery').addEventListener('click',()=>switchTab('Gallery'));
 
 /* ---------- events ---------- */
 function renderEvents(evts){
@@ -445,6 +472,49 @@ $('savePromoBtn').addEventListener('click', async ()=>{
     $('promoSaved').textContent = promo.active ? 'Deal is live — visitors will see it on their next first visit.' : 'Deal saved (currently off).';
   }catch(err){ $('promoErr').textContent = err.message || 'Could not save. Try again.'; }
   $('savePromoBtn').disabled = false;
+});
+
+/* ---------- gallery ---------- */
+let galImage = '';
+function renderGallery(photos){
+  $('galList').innerHTML = photos.length ? '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px">' + photos.map(p=>
+    '<div class="galthumb"><img src="'+esc(p.image)+'" alt="Gallery photo">'+
+    '<input data-id="'+esc(p.id)+'" class="galcap" value="'+esc(p.caption||'')+'" placeholder="Caption…" maxlength="120" style="margin-top:6px;width:100%">'+
+    '<button class="galdel" data-id="'+esc(p.id)+'" aria-label="Delete photo">&#215;</button></div>'
+  ).join('') + '</div>' : '<p style="opacity:.6">No photos yet. Add your first one above.</p>';
+  $('galList').querySelectorAll('.galcap').forEach(inp=>inp.addEventListener('change', async ()=>{
+    await fetch('/api/admin/gallery',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:inp.dataset.id,caption:inp.value})});
+  }));
+  $('galList').querySelectorAll('.galdel').forEach(btn=>btn.addEventListener('click', async ()=>{
+    if(!confirm('Delete this photo?')) return;
+    await fetch('/api/admin/gallery?id='+encodeURIComponent(btn.dataset.id),{method:'DELETE'});
+    loadGallery();
+  }));
+}
+async function loadGallery(){
+  const r = await fetch('/api/admin/gallery');
+  if(r.ok) renderGallery(await r.json());
+}
+$('galFile').addEventListener('change', async e=>{
+  const f = e.target.files[0]; if(!f) return;
+  $('galUpMsg').textContent = 'Uploading…'; $('addGalBtn').disabled = true;
+  try{ galImage = await uploadFile(f); $('galPrev').src = galImage; $('galUpMsg').textContent = 'Uploaded ✓'; }
+  catch(err){ $('galUpMsg').textContent = 'Upload failed — try again.'; }
+  $('addGalBtn').disabled = false; e.target.value = '';
+});
+$('addGalBtn').addEventListener('click', async ()=>{
+  $('galErr').textContent = '';
+  if(!galImage){ $('galErr').textContent = 'Choose a photo first.'; return; }
+  $('addGalBtn').disabled = true;
+  const r = await fetch('/api/admin/gallery',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({image:galImage,caption:$('fGalCap').value.trim()})});
+  $('addGalBtn').disabled = false;
+  if(r.ok){
+    galImage=''; $('galPrev').src=''; $('fGalCap').value=''; $('galUpMsg').textContent='';
+    loadGallery();
+  } else {
+    $('galErr').textContent = (await r.json()).error || 'Could not save — try again.';
+  }
 });
 
 $('promoFile').addEventListener('change', async e=>{

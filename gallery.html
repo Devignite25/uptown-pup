@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery — UpTown Pup</title>
+<meta name="description" content="Happy pups wearing their UpTown Pup handmade beaded collars.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#faf6ef; --cream2:#f4ecdd; --ink:#2b2b2b; --ink-soft:#5a5348;
+  --gold:#c9a227; --gold-deep:#a8841c; --blush:#e3a7ad; --sage:#8aa382;
+  --card:#fffdf8; --line:#e7dcc6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);line-height:1.65;font-weight:300}
+h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.15}
+.script{font-family:'Pinyon Script',cursive;font-weight:400}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+nav{position:sticky;top:0;z-index:50;background:rgba(250,246,239,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.brand img{height:52px;width:auto}
+.brand span{font-family:'Cormorant Garamond',serif;font-size:1.35rem;letter-spacing:.14em;text-transform:uppercase}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a.nl{text-decoration:none;color:var(--ink-soft);font-size:.95rem;letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+.nav-links a.nl:hover,.nav-links a.nl.active{color:var(--gold-deep)}
+.btn{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;padding:12px 28px;border-radius:999px;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;transition:transform .2s,background .2s;border:none;cursor:pointer;font-family:'Jost',sans-serif}
+.btn:hover{background:var(--gold-deep);transform:translateY(-2px)}
+.page-head{text-align:center;padding:64px 24px 20px}
+.page-head .script{font-size:2rem;color:var(--gold-deep)}
+.page-head h1{font-size:clamp(2.2rem,5vw,3.4rem);margin:4px 0 10px}
+.page-head p{color:var(--ink-soft);max-width:620px;margin:0 auto}
+/* masonry grid */
+.masonry{columns:3;column-gap:18px;padding:36px 0 80px}
+.mitem{break-inside:avoid;margin-bottom:18px;border-radius:14px;overflow:hidden;position:relative;cursor:zoom-in;background:var(--card);border:1px solid var(--line)}
+.mitem img{width:100%;display:block;transition:transform .35s ease}
+.mitem:hover img{transform:scale(1.03)}
+.mitem .cap{position:absolute;left:0;right:0;bottom:0;padding:28px 16px 12px;background:linear-gradient(transparent,rgba(20,18,14,.72));color:#fff;font-family:'Cormorant Garamond',serif;font-size:1.25rem;opacity:0;transition:opacity .25s}
+.mitem:hover .cap{opacity:1}
+.empty{text-align:center;color:var(--ink-soft);padding:60px 20px;font-size:1.05rem}
+/* lightbox */
+#lightbox{position:fixed;inset:0;background:rgba(20,18,14,.9);display:none;align-items:center;justify-content:center;z-index:100;padding:24px;cursor:zoom-out}
+#lightbox.open{display:flex}
+#lightbox figure{max-width:min(920px,94vw);text-align:center}
+#lightbox img{max-width:100%;max-height:80vh;border-radius:12px}
+#lightbox figcaption{color:#fff;margin-top:12px;font-family:'Cormorant Garamond',serif;font-size:1.3rem}
+#lbPrev,#lbNext{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.4);color:#fff;font-size:2rem;line-height:1;width:52px;height:52px;border-radius:50%;cursor:pointer;z-index:2}
+#lbPrev{left:16px}#lbNext{right:16px}
+#lbPrev:hover,#lbNext:hover{background:rgba(255,255,255,.3)}
+footer{background:var(--ink);color:#efe8d8;padding:52px 0 30px;text-align:center}
+footer img{height:64px;width:auto;margin-bottom:12px;filter:brightness(0) invert(1);opacity:.9}
+footer .fname{font-family:'Cormorant Garamond',serif;letter-spacing:.2em;text-transform:uppercase;font-size:1.1rem;margin-bottom:6px}
+footer a{color:var(--blush);text-decoration:none}
+footer a:hover{text-decoration:underline}
+footer .fine{margin-top:22px;font-size:.82rem;opacity:.65}
+@media(max-width:860px){.masonry{columns:2}}
+@media(max-width:560px){.masonry{columns:2;column-gap:12px}.nav-links a.nl{display:none}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html"><img src="assets/logo-full.png" alt="UpTown Pup logo"><span>UpTown Pup</span></a>
+    <div class="nav-links">
+      <a class="nl" href="index.html#collection">Collection</a>
+      <a class="nl active" href="gallery.html">Gallery</a>
+      <a class="nl" href="index.html#pricing">Pricing</a>
+      <a class="nl" href="index.html#about">About</a>
+      <a class="btn" href="https://www.etsy.com/shop/UpTownPupCreations" target="_blank" rel="noopener">Buy on Etsy</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="page-head">
+    <div class="script">happy customers</div>
+    <h1>The Pup Gallery</h1>
+    <p>Real pups out and about in their handmade UpTown Pup collars. Tap any photo to see it bigger.</p>
+  </div>
+  <div class="masonry" id="grid"><p class="empty">Loading photos…</p></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <img src="assets/wordmark.png" alt="UpTown Pup">
+    <div class="fname">UpTown Pup</div>
+    <p>uptownpup.net · <a href="https://www.etsy.com/shop/UpTownPupCreations" target="_blank" rel="noopener">Etsy store</a></p>
+    <p class="fine">Handmade with love · © 2026 UpTown Pup</p>
+  </div>
+</footer>
+
+<div id="lightbox"><button id="lbPrev" aria-label="Previous photo">&#8249;</button><figure><img id="lbImg" src="" alt=""><figcaption id="lbCap"></figcaption></figure><button id="lbNext" aria-label="Next photo">&#8250;</button></div>
+
+<script>
+let PHOTOS = [];
+let lbIdx = 0;
+const grid = document.getElementById('grid');
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbCap = document.getElementById('lbCap');
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+fetch('/api/gallery').then(r=>r.json()).then(photos=>{
+  PHOTOS = Array.isArray(photos) ? photos : [];
+  if(!PHOTOS.length){
+    grid.innerHTML = '<p class="empty">Photos coming soon — check back to meet the pups!</p>';
+    return;
+  }
+  grid.innerHTML = PHOTOS.map((p,i)=>
+    '<div class="mitem" data-i="'+i+'"><img src="'+esc(p.image)+'" alt="'+esc(p.caption||'UpTown Pup customer photo')+'" loading="lazy">'+
+    (p.caption?'<div class="cap">'+esc(p.caption)+'</div>':'')+'</div>'
+  ).join('');
+  grid.querySelectorAll('.mitem').forEach(el=>el.addEventListener('click',()=>openLb(+el.dataset.i)));
+}).catch(()=>{ grid.innerHTML = '<p class="empty">Could not load photos right now.</p>'; });
+
+function openLb(i){
+  lbIdx = (i+PHOTOS.length)%PHOTOS.length;
+  const p = PHOTOS[lbIdx];
+  lbImg.src = p.image; lbCap.textContent = p.caption||'';
+  lb.classList.add('open'); document.body.style.overflow='hidden';
+}
+function closeLb(){ lb.classList.remove('open'); document.body.style.overflow=''; }
+lb.addEventListener('click',e=>{ if(e.target.closest('#lbPrev')){openLb(lbIdx-1);} else if(e.target.closest('#lbNext')){openLb(lbIdx+1);} else closeLb(); });
+document.addEventListener('keydown',e=>{
+  if(!lb.classList.contains('open')) return;
+  if(e.key==='Escape') closeLb();
+  if(e.key==='ArrowLeft') openLb(lbIdx-1);
+  if(e.key==='ArrowRight') openLb(lbIdx+1);
+});
+</script>
+</body>
+</html>
