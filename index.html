@@ -312,11 +312,13 @@ const grid = document.getElementById('grid');
 const countNote = document.getElementById('countNote');
 let PRODUCTS = [];
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function safeUrl(u,fb){ try{ const x=new URL(String(u),location.origin); if(x.protocol==='http:'||x.protocol==='https:') return x.href; }catch(e){} return fb; }
 function photosOf(p){ return [p.image].concat(p.gallery||[]); }
 function renderProducts(){
   grid.innerHTML = '';
   PRODUCTS.forEach(p=>{
-    const url = p.etsy || ETSY + "?search_query=" + encodeURIComponent(p.name + " beaded dog collar");
+    const url = p.etsy ? safeUrl(p.etsy, ETSY) : ETSY + "?search_query=" + encodeURIComponent(p.name + " beaded dog collar");
+    const sUrl = p.stripe ? safeUrl(p.stripe, '') : '';
     const n = photosOf(p).length;
     const el = document.createElement('article');
     el.className = 'card'; el.dataset.cat = p.category;
@@ -328,7 +330,7 @@ function renderProducts(){
       '<div class="row"><span class="price">From $'+Math.max(0,Math.round(Number(p.priceFrom)||0))+'</span></div>'+
       '<div class="btnrow">'+
       '<a class="buybtn" href="'+esc(url)+'" target="_blank" rel="noopener">Buy on Etsy</a>'+
-      (p.stripe?'<a class="buybtn alt" href="'+esc(p.stripe)+'" target="_blank" rel="noopener">Buy with Stripe</a>':'')+
+      (sUrl?'<a class="buybtn alt" href="'+esc(sUrl)+'" target="_blank" rel="noopener">Buy with Stripe</a>':'')+
       '</div></div>';
     el.querySelector('.ph').addEventListener('click',()=>openLB(p,0));
     grid.appendChild(el);
@@ -394,7 +396,7 @@ fetch('/api/promo').then(r=>r.json()).then(p=>{
   else { codeBtn.style.display = 'none'; }
   const cta = document.getElementById('ppCta');
   cta.textContent = p.ctaText || 'Shop now';
-  cta.href = p.link || ETSY;
+  cta.href = safeUrl(p.link, ETSY);
   document.getElementById('ppClose').addEventListener('click',()=>pop.classList.remove('open'));
   pop.addEventListener('click',e=>{ if(e.target===pop) pop.classList.remove('open'); });
   codeBtn.addEventListener('click', async ()=>{
