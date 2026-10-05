@@ -127,7 +127,7 @@
     "blurb": "Glowing bronze & copper beads",
     "priceFrom": 35,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=copper-glow",
     "image": "assets/IMG_5392.jpeg",
     "gallery": []
   },
