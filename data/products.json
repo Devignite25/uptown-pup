@@ -28,7 +28,7 @@
     "blurb": "Blush daisies on pastel beads",
     "priceFrom": 35,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=daisy-meadow",
     "image": "assets/IMG_5370.jpeg",
     "gallery": []
   },
