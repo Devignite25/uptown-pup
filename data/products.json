@@ -193,7 +193,7 @@
     "blurb": "Orange, purple & black",
     "priceFrom": 25,
     "etsy": "https://www.etsy.com/listing/4579120483/beaded-martingale-dog-collar-halloween",
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/28EdR9fj95UJdv62HTaEE0c?client_reference_id=harvest-moon",
     "image": "assets/IMG_5379.jpeg",
     "gallery": []
   },
