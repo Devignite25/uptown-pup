@@ -72,7 +72,7 @@
     "blurb": "Warm bronze with paw-print bead",
     "priceFrom": 35,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=bronze-paw",
     "image": "assets/IMG_5377.jpeg",
     "gallery": []
   },
