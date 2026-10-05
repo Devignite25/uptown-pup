@@ -182,7 +182,7 @@
     "blurb": "Pastel confetti beads",
     "priceFrom": 35,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=confetti",
     "image": "assets/IMG_5404.jpeg",
     "gallery": []
   },
