@@ -61,7 +61,7 @@
     "blurb": "Black & champagne gold",
     "priceFrom": 25,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/28EdR9fj95UJdv62HTaEE0c?client_reference_id=champagne-noir",
     "image": "assets/IMG_5376.jpeg",
     "gallery": []
   },
