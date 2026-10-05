@@ -83,7 +83,7 @@
     "blurb": "Earthy neutrals with sunflower bead",
     "priceFrom": 35,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=sunflower-neutral",
     "image": "assets/IMG_5378.jpeg",
     "gallery": []
   },
