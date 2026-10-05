@@ -171,7 +171,7 @@
     "blurb": "Teal & violet with bow bead",
     "priceFrom": 35,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=mermaid-bow",
     "image": "assets/IMG_5403.jpeg",
     "gallery": []
   },
