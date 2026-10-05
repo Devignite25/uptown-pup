@@ -39,7 +39,7 @@
     "blurb": "Cosmic purple & blue sparkle beads",
     "priceFrom": 25,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/28EdR9fj95UJdv62HTaEE0c?client_reference_id=galaxy-glam",
     "image": "assets/IMG_5372.jpeg",
     "gallery": []
   },
