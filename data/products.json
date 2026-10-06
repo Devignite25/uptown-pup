@@ -259,7 +259,7 @@
     "blurb": "Red, green & white",
     "priceFrom": 25,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/28EdR9fj95UJdv62HTaEE0c?client_reference_id=holly-jolly",
     "image": "assets/IMG_5381.jpeg",
     "gallery": []
   },
