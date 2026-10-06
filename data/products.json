@@ -303,7 +303,7 @@
     "blurb": "Red & white stripes",
     "priceFrom": 35,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=candy-cane",
     "image": "assets/IMG_5396.jpeg",
     "gallery": []
   },
