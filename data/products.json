@@ -248,7 +248,7 @@
     "blurb": "Red & green",
     "priceFrom": 25,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/28EdR9fj95UJdv62HTaEE0c?client_reference_id=classic-christmas",
     "image": "assets/IMG_5380.jpeg",
     "gallery": []
   },
