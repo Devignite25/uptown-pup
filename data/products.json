@@ -358,7 +358,7 @@
     "blurb": "Teal & red with tropical beads",
     "priceFrom": 35,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=fiesta",
     "image": "assets/IMG_5375.jpeg",
     "gallery": []
   },
@@ -369,7 +369,7 @@
     "blurb": "Blue & green with turtle beads",
     "priceFrom": 35,
     "etsy": "https://www.etsy.com/listing/4577192586/beaded-martingale-dog-collar-colortheme",
-    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=sea-turtle",
+    "stripe": null,
     "image": "assets/IMG_5399.jpeg",
     "gallery": []
   },
@@ -380,7 +380,7 @@
     "blurb": "Sandy neutrals & blue with turtle beads",
     "priceFrom": 35,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=beachcomber",
     "image": "assets/IMG_5405.jpeg",
     "gallery": []
   },
