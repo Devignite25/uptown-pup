@@ -292,7 +292,7 @@
     "blurb": "Green, red & white",
     "priceFrom": 35,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=mistletoe",
     "image": "assets/IMG_5391.jpeg",
     "gallery": []
   },
