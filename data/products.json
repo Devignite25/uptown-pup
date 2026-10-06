@@ -314,7 +314,7 @@
     "blurb": "Red, gold & white with stars",
     "priceFrom": 35,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=starlight",
     "image": "assets/IMG_5398.jpeg",
     "gallery": []
   },
@@ -325,7 +325,7 @@
     "blurb": "Red & gold celebration",
     "priceFrom": 35,
     "etsy": "https://www.etsy.com/listing/4579134320/beaded-martingale-dog-collar-christmas",
-    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=holiday-gold",
+    "stripe": null,
     "image": "assets/IMG_5400.jpeg",
     "gallery": []
   },
@@ -336,7 +336,7 @@
     "blurb": "Green, red & white stripes",
     "priceFrom": 35,
     "etsy": null,
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=jolly-stripe",
     "image": "assets/IMG_5401.jpeg",
     "gallery": []
   },
