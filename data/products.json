@@ -325,7 +325,7 @@
     "blurb": "Red & gold celebration",
     "priceFrom": 35,
     "etsy": "https://www.etsy.com/listing/4579134320/beaded-martingale-dog-collar-christmas",
-    "stripe": null,
+    "stripe": "https://buy.stripe.com/fZu7sL1sj5UJbmY82daEE0d?client_reference_id=holiday-gold",
     "image": "assets/IMG_5400.jpeg",
     "gallery": []
   },
